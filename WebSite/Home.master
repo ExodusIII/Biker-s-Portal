@@ -1,0 +1,226 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Home.master.cs" Inherits="Home" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Biker's Portal</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/login-register.css" rel="stylesheet" />
+    <link href="css/Profile.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Bootstrap core JavaScript -->
+    <script src="jquery/jquery.min.js"></script>
+    <script src="jquery/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/login-register.js"></script>
+    <script src="js/somes.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <div class="col-lg-3">
+                    <a class="navbar-brand" href="Main.aspx">
+                        <img height="35" width="200" src="img/logo.jpg" />
+
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <asp:TextBox ID="searchItem" runat="server" CssClass="form-control" placeholder="Model, Başlık, İl..." CausesValidation="False"></asp:TextBox>
+                        <span class="input-group-btn">
+                            <asp:Button ID="searchItemBtn" runat="server" CssClass="btn btn-secondary" Text="Ara" OnClick="searchItemBtn_Click" />
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <asp:Panel ID="uye_giris_buttons" runat="server">
+                        <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal" validationgroup="OutThat">Giriş Yap</button>
+                        <asp:Button ID="kayit_ol" runat="server" Text="Kayıt Ol" CssClass="btn btn-info btn-md" OnClick="kayit_ol_Click" ValidationGroup="OutThat" />
+                        <!-- Modal -->
+
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>Giriş</h3>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Kullanıcı Adı -->
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label" for="textinput">Kullanıcı Adı</label>
+                                            <div class="col-md-8">
+                                                <asp:TextBox ID="kullanici_adi" runat="server" CssClass="form-control input-md"></asp:TextBox>
+                                                <asp:RequiredFieldValidator runat="server" ControlToValidate="kullanici_adi" ErrorMessage="Gerekli" ForeColor="Red" ValidationGroup="RequestVali2"></asp:RequiredFieldValidator>
+                                                <asp:RegularExpressionValidator runat="server" ControlToValidate="kullanici_adi" Display="Dynamic" ValidationExpression="^[a-zA-Z0-9\s]{1,100}$" ErrorMessage="*Sadece harfler ve sayılar" ForeColor="Red" ValidationGroup="RequestVali2"></asp:RegularExpressionValidator>
+                                            </div>
+                                        </div>
+
+                                        <!-- Parola -->
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label" for="passwordinput">Parola</label>
+                                            <div class="col-md-8">
+                                                <asp:TextBox ID="parola" runat="server" CssClass="form-control input-md" TextMode="Password"></asp:TextBox>
+                                                <asp:RequiredFieldValidator runat="server" ControlToValidate="parola" ErrorMessage="Gerekli" ForeColor="Red" ValidationGroup="RequestVali2"></asp:RequiredFieldValidator>
+                                                <asp:RegularExpressionValidator runat="server" ControlToValidate="parola" Display="Dynamic" ValidationExpression="^[a-zA-Z0-9şŞçÇğĞİöÖüÜı\s]{1,16}$" ErrorMessage="*Sadece harfler ve sayılar" ForeColor="Red" ValidationGroup="RequestVali2"></asp:RegularExpressionValidator>
+                                                <br />
+                                                <a href="SignUp.aspx" class="font-italic">Hala üye olmadınız mı?</a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Hatırla -->
+                                        <%--<div class="form-group">
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    <label for="checkboxes-0">
+                                                        <asp:CheckBox ID="hatirla" runat="server" Text=" Hatırla" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                        <!-- Giriş Yap -->
+                                        <div class="form-group">
+                                            <div class="col-md-8">
+                                                <asp:Label ID="sonuc" runat="server" CssClass="control-label"></asp:Label>
+                                                <asp:Button ID="giris_yap" runat="server" CssClass="btn btn-info" Text="Giriş Yap" OnClick="giris_yap_Click" ValidationGroup="RequestVali2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal Content End -->
+                            </div>
+                        </div>
+                        <!-- Modal End -->
+                    </asp:Panel>
+                    <asp:Panel ID="profil" runat="server">
+                        <asp:Button ID="ilan_ver" runat="server" CssClass="btn btn-warning btn-md" Text="İlan Ver" ValidationGroup="RequestVali3" OnClick="ilan_ver_Click" />
+                        <asp:Button ID="userprofil" runat="server" CssClass="btn btn-info" Text="Profilim" OnClick="userprofil_Click" />
+                        <asp:Button ID="cikis" runat="server" CssClass="btn btn-info" Text="Çıkış" OnClick="cikis_Click" />
+                    </asp:Panel>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <asp:Panel ID="profilmenu" runat="server" Visible="false">
+                        <br />
+                        <br />
+                        <div class="profile-sidebar">
+                            <div class="offset-md-1 col-md-10">
+                                <div class="profile-userpic">
+                                    <asp:Image ID="phImage" runat="server" ImageUrl='<%# Eval("Picture") %>' />
+                                </div>
+                                <div class="profile-usertitle">
+                                    <div class="profile-usertitle-name">
+                                        <hr />
+                                        <asp:Label ID="lblProfilUsername" runat="server"></asp:Label><br />
+                                        <asp:Label ID="lblProfilAnno" runat="server"></asp:Label>
+                                        <hr />
+                                    </div>
+                                </div>
+                                <div class="list-group">
+                                    <button type="button" class="list-group-item list-group-item-action" data-toggle="button" onclick="return show('ilanlar');">Ilanlarim<i class="fa fa-bullhorn"></i><span class="badge pull-right"><asp:Label ID="lblIlanSayisi" runat="server"></asp:Label></span></button>
+                                    <button type="button" class="list-group-item list-group-item-action" data-toggle="button" onclick="return show('favoriler');">Kiralamalarim<i class="fa fa-star"></i><span class="badge pull-right"><asp:Label ID="lblKiraSayisi" runat="server"></asp:Label></span></button>
+                                    <button type="button" class="list-group-item list-group-item-action" data-toggle="button" onclick="return show('inbox');">Mesajlarim<i class="fa fa-envelope"></i><span class="badge pull-right"><asp:Label ID="lblMesajSayisi" runat="server"></asp:Label></span></button>
+                                    <button type="button" class="list-group-item list-group-item-action" data-toggle="button" onclick="return show('settings');">Ayarlar<i class="fa fa-cog"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </asp:Panel>
+                    <asp:Panel ID="anamenu" runat="server" Visible="true">
+
+                        <!-- Sidebar Widgets Column -->
+
+                        <br />
+                        <br />
+
+                        <h4>Menü</h4>
+                        <div class="list-group">
+                            <asp:Button ID="main" runat="server" Text="Anasayfa" CssClass="list-group-item list-group-item-action" OnClick="main_Click" />
+                            <button type="button" class="list-group-item list-group-item-action dropdown-toggle" data-toggle="collapse" data-target="#bisiklet_turleri" aria-expanded="false" aria-controls="bisiklet_turleri">
+                                Bisiklet türleri</button>
+                            <div class="collapse" id="bisiklet_turleri">
+                                <div class="list-group">
+                                    <asp:Button ID="hepsi" runat="server" Text="Hepsi" CssClass="list-group-item list-group-item-action" OnClick="hepsi_Click" />
+                                    <asp:Button ID="dag" runat="server" Text="Dağ Bisikleti" CssClass="list-group-item list-group-item-action" OnClick="dag_Click" />
+                                    <asp:Button ID="sehir" runat="server" Text="Şehir Bisikleti" CssClass="list-group-item list-group-item-action" OnClick="sehir_Click" />
+                                    <asp:Button ID="yol" runat="server" Text="Yarış/Yol Bisikleti" CssClass="list-group-item list-group-item-action" OnClick="yol_Click" />
+                                    <asp:Button ID="cocuk" runat="server" Text="Çocuk Bisikleti" CssClass="list-group-item list-group-item-action" OnClick="cocuk_Click" />
+                                </div>
+                            </div>
+                        </div>
+                    </asp:Panel>
+                </div>
+                <div id="content_place" class="col-md-9">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <footer class="py-3 bg-dark">
+            <div class="footer" id="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h3 class="text-light">Bizi Takip Edin</h3>
+                            <div class="list-group-flush">
+                                <a href="#" class="bg-dark list-group-item list-group-item-action text-light">Facebook</a>
+                                <a href="#" class="bg-dark list-group-item list-group-item-action text-light">Twitter</a>
+                                <a href="#" class="bg-dark list-group-item list-group-item-action text-light">Instagram</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <h3 class="text-light">Kurumsal</h3>
+                            <div class="list-group-flush">
+                                <a href="AboutUs.aspx" class="bg-dark list-group-item list-group-item-action text-light">Hakkımızda</a>
+                                <a href="Support.aspx" class="bg-dark list-group-item list-group-item-action text-light">İstek Gönder</a>
+                                <a href="FAQ.aspx" class="bg-dark list-group-item list-group-item-action text-light">SSS</a>
+                                <a href="Privacy.aspx" class="bg-dark list-group-item list-group-item-action text-light">Gizlilik Politikası</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <table style="height: 100px;">
+                                <tbody>
+                                    <tr>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class="text-right text-light align-middle">Copyright © Biker Portal 2018. All rights reserved.</td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </form>
+</body>
+</html>
